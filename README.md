@@ -1,5 +1,5 @@
 # IRSearch #
-#### A search tool designed to help find connections between alumni & foundations, and alumni-alumni through foundations ####
+#### A search tool to help search through IRS 990 data ####
 
 ## Contents ##
 1. Getting Started
