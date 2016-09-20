@@ -1,4 +1,4 @@
-# IRS990 TaxApp #
+# IRSearch #
 #### A search tool designed to help find connections between alumni & foundations, and alumni-alumni through foundations ####
 
 ## Contents ##
