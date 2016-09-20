@@ -1,0 +1,75 @@
+/* for Angular-UI compatibility*/
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+div.wrapper{
+	margin: 0px 50px 0px 50px;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+li.expandYears {
+	display: inline;
+}
+
+li.expandYears-notclickable {
+	display: inline;
+	padding: 0px 3px ;
+}
+
+table.results-main {
+	border-collapse: separate;
+	border-spacing: 20px 5px;
+	white-space: nowrap;
+}
+table.results-main tr {
+	vertical-align: top;
+}
+table.results-main td {
+	white-space: normal;
+}
+
+table.results-people {
+	border-collapse: separate;
+	border-spacing: 20px 5px;
+	white-space: nowrap;
+}
+
+.font-slabo {
+	font-family: 'Slabo 27px', serif;
+}
+
+.title {
+	font-size: 50px;
+	margin: 0 0 20px 0;
+}
+
+#title-link{
+	color: #636363;
+	text-decoration: none;
+}
+
+#wrapper {
+	max-width: 1000px;
+	margin: 0 auto;
+}
+
+#wrapper-body {
+	min-width: 90%;
+	margin: 0 25px;
+}
+
+#wrapper-header {	
+	margin: 30px 0;
+}
+
+
+#wrapper-pagination{
+	/*position: absolute;*/
+	bottom: 15px;
+	width: 100%;
+	margin: 0 auto;
+}

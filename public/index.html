@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>IRS 990 Search App</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="styles/style.css">
+	<link rel="stylesheet" href="styles/custombootstrap.css">
+	<style>
+		@import 'https://fonts.googleapis.com/css?family=Slabo+27px';
+	</style>
+	
+
+</head>
+<body ng-controller="searchController">
+
+	<div id="wrapper">
+		<div id="wrapper-body">
+			<div id="wrapper-header">
+				<h1 class="font-slabo text-center title" ><a href="/" id="title-link" style="text-decoration:none;">Welcome to <b>IRS</b>earch</a></h1>
+				<h4 class="font-slabo text-center">A web interface designed to make searching through IRS990 form data easier</h4>
+			</div>
+
+			<form name="searchquery" ng-submit="searchHelper(searchquery.$valid)" novalidate>
+
+				<div class="form-group">
+					<div class="input-group">
+						<input type="text" 
+							class="form-control"
+							size="50"
+							placeholder="Search" 
+							ng-trim="false" 
+							ng-model="searchform.primarySearch" 
+							uib-typeahead="result.OrganizationName for result in searchlive($viewValue)" 
+							typeahead-focus-first="false" 
+							typeahead-show-hint="true"
+							typeahead-min-length="2"
+							typeahead-on-select="formatLiveInput()"
+							ng-pattern="validOrgNameRegex" required/>
+						<span class="input-group-btn">
+							<input type="submit" class="btn btn-primary sharp font-slabo" value="Search" ng-disabled="searchform.$valid"/>
+						</span>
+					</div>
+				</div>
+			</form>
+
+			<div ng-show="searchStatus"><b>{{searchStatus}}</b></div>
+			<h4 ng-show="showResults">{{showingBegin}}-{{showingEnd}} of {{TotalItems}} for {{searchform.primarySearch}}</h4>
+
+			<div ng-controller="ResultsController" ng-show="showResults">
+				<uib-accordion>
+					<div uib-accordion-group 
+						ng-repeat="item in searchResp | toArray" 		
+						heading="{{item.OrganizationName}}">
+						<uib-accordion-heading><span ng-click="expand(item)">{{item.OrganizationName}}</span></uib-accordion-heading>
+						<uib-tabset active="item.most_recent_TabIndex" ng-if="item.most_recent_TabIndex > -1">
+							<uib-tab 
+								ng-repeat="filing in item.RefsByTaxPeriod | orderBy: '-filing.TaxPeriod'" 
+								index="filing.tabIndex"
+								heading="{{filing.TaxPeriod | CleanYear}}" 
+								select="displayDataHelper(item, filing.TaxPeriod, filing.id)" 
+								disable="filing.disabled">
+								<div ng-show="item.isOnline">
+									<div>
+										<table class="results-main">
+											<tr ng-show="item.downloadData.URL"><th>URL</th><td><a href="{{item.downloadData.URL}}" target="_blank">Link to XML form</a></td></tr>
+											<tr ng-show="item.downloadData.PrincipalOfficer"><th>Principal Officer</th><td>{{item.downloadData.PrincipalOfficer}}</td></tr>
+											<tr ng-show="item.downloadData.Mission"><th>Mission</th><td>{{item.downloadData.Mission}}</td></tr>
+											<tr ng-show="item.downloadData.Location"><th>State</th><td>{{item.downloadData.Location}}</td></tr>
+											<tr ng-show="item.downloadData.CYRevenue"><th>Total Revenue</th><td>{{item.downloadData.CYRevenue | currency}}</td></tr>
+											<tr ng-show="item.downloadData.GrantsPaid"><th>Grants Paid</th><td>{{item.downloadData.GrantsPaid | currency}}</td></tr>
+											<tr ng-show="item.downloadData.CYExpenses"><th>Total Expenses</th><td>{{item.downloadData.CYExpenses | currency}}</td></tr>
+											<tr ng-show="item.downloadData.CYNetAssets"><th>Net Assets</th><td>{{item.downloadData.CYNetAssets | currency}}</td></tr>
+											<tr ng-controller="PeopleController">
+												<th style="vertical-align:top;">Key People</th>
+												<td>
+													<button class="btn btn-primary sharp" id="btn-people" ng-click="expandPeople(item.downloadData.keyPeople)">+</button><br>
+													<table class="results-people" ng-show="expandPeopleStatus">
+														<tr>
+															<th>Name</th><th>Title</th><th>ID</th>
+														</tr>
+														<tr ng-repeat="person in item.downloadData.keyPeople">
+															<td>{{person[0]}}</td><td>{{person[1]}}</td><td><a href="#">{{person.isMatched}}</a></td>
+														</tr>
+													</table>	
+												</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+							</uib-tab>				
+						</uib-tabset>
+					</div>
+				</uib-accordion>
+			</div>
+		</div>
+
+		<div id="wrapper-pagination" class="text-center" ng-show="showResults && TotalItems > ItemsPerPage">
+			<ul	uib-pagination
+				boundary-links="true"
+				direction-links="true"
+				total-items="TotalItems"
+				rotate="true"
+				max-size="5"
+				force-ellipses="true"
+				ng-model="CurrentPage"
+				ng-change="changePage()"></ul>
+		</div>
+	</div>
+	<script src="scripts/taxapp.js"></script>
+	<script src="scripts/ui-bootstrap-tpls-2.0.2.min.js"></script>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular-animate.js"></script> -->
+</body>
+</html>
