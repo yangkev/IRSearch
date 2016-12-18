@@ -293,15 +293,5 @@ Use a pie-chart to show where foundations are spending their money and to show p
 This information is available in the IRS990 data. It would be helpful to see, for example, if a foundation only gives out 1 big gift, or if they
 give out dozens of small gifts. 
 
-#### Genres/Category specific giving ####
-For example, if you are the Bentley Historical Library, you want to find foundations that give to historical archives, collections, libraries etc (similar organizations)
-so that perhaps you (the Bentley Historical Library), can nab a share.
-
-#### Network Graphs of UMich People ####
-With the DART name-match API, use it to create Network Graphs/visualizations of connections between matched `KeyPeople`. 
-
-#### Download Bare-minimum Information to create DART Records ####
-Add functionaility to download information about an organization so that a DART record can be created for it. Also download the `KeyPeople` for relationship mapping in DART.
-
 ## Issues ##
 1. Clicking the title to go back to home page results in "Angular Flash". This can be fixed easily with [ng-bind](http://stackoverflow.com/questions/28514241/angularjs-how-to-prevent-code-flash-in-page-while-loading)
